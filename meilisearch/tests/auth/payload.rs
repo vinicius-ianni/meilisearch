@@ -1,4 +1,5 @@
 use actix_web::test;
+use meili_snap::*;
 use serde_json::{json, Value};
 
 use crate::common::Server;
@@ -28,16 +29,15 @@ async fn error_api_key_bad_content_types() {
     let status_code = res.status();
     let body = test::read_body(res).await;
     let response: Value = serde_json::from_slice(&body).unwrap_or_default();
-    assert_eq!(status_code, 415);
-    assert_eq!(
-        response["message"],
-        json!(
-            r#"The Content-Type `text/plain` is invalid. Accepted values for the Content-Type header are: `application/json`"#
-        )
-    );
-    assert_eq!(response["code"], "invalid_content_type");
-    assert_eq!(response["type"], "invalid_request");
-    assert_eq!(response["link"], "https://docs.meilisearch.com/errors#invalid-content-type");
+    snapshot!(status_code, @"415 Unsupported Media Type");
+    snapshot!(json_string!(response), @r###"
+    {
+      "message": "The Content-Type `text/plain` is invalid. Accepted values for the Content-Type header are: `application/json`",
+      "code": "invalid_content_type",
+      "type": "invalid_request",
+      "link": "https://docs.meilisearch.com/errors#invalid-content-type"
+    }
+    "###);
 
     // patch
     let req = test::TestRequest::patch()
@@ -50,16 +50,15 @@ async fn error_api_key_bad_content_types() {
     let status_code = res.status();
     let body = test::read_body(res).await;
     let response: Value = serde_json::from_slice(&body).unwrap_or_default();
-    assert_eq!(status_code, 415);
-    assert_eq!(
-        response["message"],
-        json!(
-            r#"The Content-Type `text/plain` is invalid. Accepted values for the Content-Type header are: `application/json`"#
-        )
-    );
-    assert_eq!(response["code"], "invalid_content_type");
-    assert_eq!(response["type"], "invalid_request");
-    assert_eq!(response["link"], "https://docs.meilisearch.com/errors#invalid-content-type");
+    snapshot!(status_code, @"415 Unsupported Media Type");
+    snapshot!(json_string!(response), @r###"
+    {
+      "message": "The Content-Type `text/plain` is invalid. Accepted values for the Content-Type header are: `application/json`",
+      "code": "invalid_content_type",
+      "type": "invalid_request",
+      "link": "https://docs.meilisearch.com/errors#invalid-content-type"
+    }
+    "###);
 }
 
 #[actix_rt::test]
@@ -87,16 +86,15 @@ async fn error_api_key_empty_content_types() {
     let status_code = res.status();
     let body = test::read_body(res).await;
     let response: Value = serde_json::from_slice(&body).unwrap_or_default();
-    assert_eq!(status_code, 415);
-    assert_eq!(
-        response["message"],
-        json!(
-            r#"The Content-Type `` is invalid. Accepted values for the Content-Type header are: `application/json`"#
-        )
-    );
-    assert_eq!(response["code"], "invalid_content_type");
-    assert_eq!(response["type"], "invalid_request");
-    assert_eq!(response["link"], "https://docs.meilisearch.com/errors#invalid-content-type");
+    snapshot!(status_code, @"415 Unsupported Media Type");
+    snapshot!(json_string!(response), @r###"
+    {
+      "message": "The Content-Type `` is invalid. Accepted values for the Content-Type header are: `application/json`",
+      "code": "invalid_content_type",
+      "type": "invalid_request",
+      "link": "https://docs.meilisearch.com/errors#invalid-content-type"
+    }
+    "###);
 
     // patch
     let req = test::TestRequest::patch()
@@ -109,16 +107,15 @@ async fn error_api_key_empty_content_types() {
     let status_code = res.status();
     let body = test::read_body(res).await;
     let response: Value = serde_json::from_slice(&body).unwrap_or_default();
-    assert_eq!(status_code, 415);
-    assert_eq!(
-        response["message"],
-        json!(
-            r#"The Content-Type `` is invalid. Accepted values for the Content-Type header are: `application/json`"#
-        )
-    );
-    assert_eq!(response["code"], "invalid_content_type");
-    assert_eq!(response["type"], "invalid_request");
-    assert_eq!(response["link"], "https://docs.meilisearch.com/errors#invalid-content-type");
+    snapshot!(status_code, @"415 Unsupported Media Type");
+    snapshot!(json_string!(response), @r###"
+    {
+      "message": "The Content-Type `` is invalid. Accepted values for the Content-Type header are: `application/json`",
+      "code": "invalid_content_type",
+      "type": "invalid_request",
+      "link": "https://docs.meilisearch.com/errors#invalid-content-type"
+    }
+    "###);
 }
 
 #[actix_rt::test]
@@ -145,16 +142,15 @@ async fn error_api_key_missing_content_types() {
     let status_code = res.status();
     let body = test::read_body(res).await;
     let response: Value = serde_json::from_slice(&body).unwrap_or_default();
-    assert_eq!(status_code, 415);
-    assert_eq!(
-        response["message"],
-        json!(
-            r#"A Content-Type header is missing. Accepted values for the Content-Type header are: `application/json`"#
-        )
-    );
-    assert_eq!(response["code"], "missing_content_type");
-    assert_eq!(response["type"], "invalid_request");
-    assert_eq!(response["link"], "https://docs.meilisearch.com/errors#missing-content-type");
+    snapshot!(status_code, @"415 Unsupported Media Type");
+    snapshot!(json_string!(response), @r###"
+    {
+      "message": "A Content-Type header is missing. Accepted values for the Content-Type header are: `application/json`",
+      "code": "missing_content_type",
+      "type": "invalid_request",
+      "link": "https://docs.meilisearch.com/errors#missing-content-type"
+    }
+    "###);
 
     // patch
     let req = test::TestRequest::patch()
@@ -166,16 +162,15 @@ async fn error_api_key_missing_content_types() {
     let status_code = res.status();
     let body = test::read_body(res).await;
     let response: Value = serde_json::from_slice(&body).unwrap_or_default();
-    assert_eq!(status_code, 415);
-    assert_eq!(
-        response["message"],
-        json!(
-            r#"A Content-Type header is missing. Accepted values for the Content-Type header are: `application/json`"#
-        )
-    );
-    assert_eq!(response["code"], "missing_content_type");
-    assert_eq!(response["type"], "invalid_request");
-    assert_eq!(response["link"], "https://docs.meilisearch.com/errors#missing-content-type");
+    snapshot!(status_code, @"415 Unsupported Media Type");
+    snapshot!(json_string!(response), @r###"
+    {
+      "message": "A Content-Type header is missing. Accepted values for the Content-Type header are: `application/json`",
+      "code": "missing_content_type",
+      "type": "invalid_request",
+      "link": "https://docs.meilisearch.com/errors#missing-content-type"
+    }
+    "###);
 }
 
 #[actix_rt::test]
@@ -197,11 +192,15 @@ async fn error_api_key_empty_payload() {
     let status_code = res.status();
     let body = test::read_body(res).await;
     let response: Value = serde_json::from_slice(&body).unwrap_or_default();
-    assert_eq!(status_code, 400);
-    assert_eq!(response["code"], json!("missing_payload"));
-    assert_eq!(response["type"], json!("invalid_request"));
-    assert_eq!(response["link"], json!("https://docs.meilisearch.com/errors#missing-payload"));
-    assert_eq!(response["message"], json!(r#"A json payload is missing."#));
+    snapshot!(status_code, @"400 Bad Request");
+    snapshot!(json_string!(response), @r###"
+    {
+      "message": "A json payload is missing.",
+      "code": "missing_payload",
+      "type": "invalid_request",
+      "link": "https://docs.meilisearch.com/errors#missing-payload"
+    }
+    "###);
 
     // patch
     let req = test::TestRequest::patch()
@@ -214,11 +213,15 @@ async fn error_api_key_empty_payload() {
     let status_code = res.status();
     let body = test::read_body(res).await;
     let response: Value = serde_json::from_slice(&body).unwrap_or_default();
-    assert_eq!(status_code, 400);
-    assert_eq!(response["code"], json!("missing_payload"));
-    assert_eq!(response["type"], json!("invalid_request"));
-    assert_eq!(response["link"], json!("https://docs.meilisearch.com/errors#missing-payload"));
-    assert_eq!(response["message"], json!(r#"A json payload is missing."#));
+    snapshot!(status_code, @"400 Bad Request");
+    snapshot!(json_string!(response), @r###"
+    {
+      "message": "A json payload is missing.",
+      "code": "missing_payload",
+      "type": "invalid_request",
+      "link": "https://docs.meilisearch.com/errors#missing-payload"
+    }
+    "###);
 }
 
 #[actix_rt::test]
@@ -240,16 +243,15 @@ async fn error_api_key_malformed_payload() {
     let status_code = res.status();
     let body = test::read_body(res).await;
     let response: Value = serde_json::from_slice(&body).unwrap_or_default();
-    assert_eq!(status_code, 400);
-    assert_eq!(response["code"], json!("malformed_payload"));
-    assert_eq!(response["type"], json!("invalid_request"));
-    assert_eq!(response["link"], json!("https://docs.meilisearch.com/errors#malformed-payload"));
-    assert_eq!(
-        response["message"],
-        json!(
-            r#"The json payload provided is malformed. `EOF while parsing an object at line 1 column 22`."#
-        )
-    );
+    snapshot!(status_code, @"400 Bad Request");
+    snapshot!(json_string!(response), @r###"
+    {
+      "message": "The json payload provided is malformed. `EOF while parsing an object at line 1 column 22`.",
+      "code": "malformed_payload",
+      "type": "invalid_request",
+      "link": "https://docs.meilisearch.com/errors#malformed-payload"
+    }
+    "###);
 
     // patch
     let req = test::TestRequest::patch()
@@ -262,14 +264,13 @@ async fn error_api_key_malformed_payload() {
     let status_code = res.status();
     let body = test::read_body(res).await;
     let response: Value = serde_json::from_slice(&body).unwrap_or_default();
-    assert_eq!(status_code, 400);
-    assert_eq!(response["code"], json!("malformed_payload"));
-    assert_eq!(response["type"], json!("invalid_request"));
-    assert_eq!(response["link"], json!("https://docs.meilisearch.com/errors#malformed-payload"));
-    assert_eq!(
-        response["message"],
-        json!(
-            r#"The json payload provided is malformed. `EOF while parsing an object at line 1 column 22`."#
-        )
-    );
+    snapshot!(status_code, @"400 Bad Request");
+    snapshot!(json_string!(response), @r###"
+    {
+      "message": "The json payload provided is malformed. `EOF while parsing an object at line 1 column 22`.",
+      "code": "malformed_payload",
+      "type": "invalid_request",
+      "link": "https://docs.meilisearch.com/errors#malformed-payload"
+    }
+    "###);
 }
