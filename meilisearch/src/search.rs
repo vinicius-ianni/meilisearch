@@ -5,6 +5,7 @@ use std::time::Instant;
 
 use deserr::DeserializeFromValue;
 use either::Either;
+use meilisearch_auth::IndexSearchRules;
 use meilisearch_types::error::deserr_codes::*;
 use meilisearch_types::error::DeserrError;
 use meilisearch_types::settings::DEFAULT_PAGINATION_MAX_TOTAL_HITS;
@@ -229,6 +230,26 @@ pub enum HitsInfo {
     Pagination { hits_per_page: usize, page: usize, total_pages: usize, total_hits: usize },
     #[serde(rename_all = "camelCase")]
     OffsetLimit { limit: usize, offset: usize, estimated_total_hits: usize },
+}
+
+/// Incorporate search rules in search query
+pub fn add_search_rules(query: &mut SearchQuery, rules: IndexSearchRules) {
+    query.filter = match (query.filter.take(), rules.filter) {
+        (None, rules_filter) => rules_filter,
+        (filter, None) => filter,
+        (Some(filter), Some(rules_filter)) => {
+            let filter = match filter {
+                Value::Array(filter) => filter,
+                filter => vec![filter],
+            };
+            let rules_filter = match rules_filter {
+                Value::Array(rules_filter) => rules_filter,
+                rules_filter => vec![rules_filter],
+            };
+
+            Some(Value::Array([filter, rules_filter].concat()))
+        }
+    }
 }
 
 pub fn perform_search(
