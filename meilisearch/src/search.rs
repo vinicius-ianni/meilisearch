@@ -215,6 +215,14 @@ pub struct SearchResult {
 }
 
 #[derive(Serialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct SearchResultWithIndex {
+    pub index_uid: String,
+    #[serde(flatten)]
+    pub result: SearchResult,
+}
+
+#[derive(Serialize, Debug, Clone, PartialEq, Eq)]
 #[serde(untagged)]
 pub enum HitsInfo {
     #[serde(rename_all = "camelCase")]

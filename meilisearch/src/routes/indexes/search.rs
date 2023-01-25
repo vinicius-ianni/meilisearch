@@ -95,7 +95,7 @@ pub mod multiple_search {
     use crate::extractors::authentication::GuardedData;
     use crate::extractors::json::ValidatedJson;
     use crate::extractors::sequential_extractor::SeqHandler;
-    use crate::search::SearchQueryWithIndex;
+    use crate::search::{SearchQueryWithIndex, SearchResultWithIndex};
 
     pub fn configure(cfg: &mut web::ServiceConfig) {
         cfg.service(web::resource("").route(web::post().to(SeqHandler(search_with_post))));
@@ -131,7 +131,7 @@ pub mod multiple_search {
             }
             analytics.post_search(aggregate);
 
-            search_results.push(search_result?);
+            search_results.push(SearchResultWithIndex { index_uid, result: search_result? });
         }
 
         debug!("returns: {:?}", search_results);
