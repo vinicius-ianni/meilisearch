@@ -32,7 +32,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
         .service(web::resource("/stats").route(web::get().to(get_stats)))
         .service(web::resource("/version").route(web::get().to(get_version)))
         .service(web::scope("/indexes").configure(indexes::configure))
-        .service(web::scope("/search").configure(indexes::search::multiple_search::configure))
+        .service(web::scope("/search").configure(multi_search::configure))
         .service(web::scope("/swap-indexes").configure(swap_indexes::configure));
 }
 
@@ -349,3 +349,5 @@ pub async fn get_health(
 
     Ok(HttpResponse::Ok().json(serde_json::json!({ "status": "available" })))
 }
+
+mod multi_search;
